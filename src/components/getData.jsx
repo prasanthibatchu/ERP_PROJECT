@@ -1,9 +1,11 @@
 import axios from "axios";
 import React, { useEffect,useState } from "react";
 import "../App.css"
+import {Button}  from '@mui/material'
+import { useNavigate } from "react-router-dom";
 export const Getdetail = () => {
   const [users, setUsers] = useState([]);
- 
+ let history=useNavigate()
 
   useEffect(() => {
     getdata();
@@ -35,7 +37,7 @@ axios.get("/List of all Workers").then(function (res) {
             <th>NAME</th>
             <th>AGE</th>
             <th>BLOOD GROUP</th>
-            
+
             <th>ADDED TIME</th>
             <th>PHOTO</th>
             <th>EDITED TIME</th>
@@ -51,9 +53,9 @@ axios.get("/List of all Workers").then(function (res) {
                   <td>{user.id}</td>
                   <td>{user.name}</td>
                   <td>{user.age}</td>
-                  <td>{user.blood_group}</td>
-                  
+                  <td>{user.blood_group}</td>                  
                   <td>{user.Added_Date}</td>
+                  
                   
                   <td>
                         <img
@@ -66,16 +68,17 @@ axios.get("/List of all Workers").then(function (res) {
                       </td>
                       <td>{user.Edited_Date }</td>
 
-                  <td>
-                    <button
-                      size="small"
-                      variant="contained"
-                      color="success"
-                      
-                    >
-                      Edit
-                    </button>
-                  </td>
+                      <td>
+                            <form>
+                              <Button
+                                variant="contained"
+                                color="success"
+                                onClick={() => history(`/edit/${user.id}`)}
+                              >
+                                Edit
+                              </Button>
+                            </form>
+                          </td>
                                   
                 </tr>
               );

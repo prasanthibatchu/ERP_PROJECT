@@ -33,11 +33,13 @@ export const Add = () => {
   const [photo, setPhoto] = useState("");
   const [err, setErr] = useState(0);
   const webcamRef = useRef(null);
+//  const [dpic,setDpic]=useState("")
+
   const capture = useCallback(() => {
         const photoSrc = webcamRef.current.getScreenshot();
         setPhoto(photoSrc);
+     console.log(photoSrc);
       });
- 
 
   const validateForm = () => {
     setErr(0);
@@ -45,7 +47,12 @@ export const Add = () => {
     if (user.name === "") {
       setErr(1);
       alert("Please enter Name");
-    } else if (user.age === "") {
+    }
+    else if(photo === ""){
+     
+      alert("please capture your image")
+    }
+     else if (user.age === "") {
       setErr(3);
       alert("Please enter your age");
     } else if (user.bloodgroup === "") {
@@ -57,10 +64,10 @@ export const Add = () => {
       const formdata = new FormData();
 
       formdata.append("name", user.name);
-      formdata.append("photo", photo);
+      formdata.append("photo", photo?.split(",")[1]);
       formdata.append("age", user.age);
       formdata.append("blood_group", user.bloodgroup);
-     
+      
       axios.post("/Add Worker", formdata).then(function(response) {
         if (response.data.status === true) {
           history("/data");
@@ -76,6 +83,8 @@ export const Add = () => {
   const onChangeValue = (e) => {
     setUsers({ ...user, [e.target.name]: e.target.value });
   };
+
+ 
 
   return (
    
@@ -118,7 +127,7 @@ export const Add = () => {
                       screenshotFormat="photo/jpeg"
                       width={220}
                       videoConstraints={videoConstraints}
-                     
+                    
                     />
                   ) : (
                     <img src={photo} />
@@ -129,7 +138,9 @@ export const Add = () => {
                     <button
                       onClick={(e) => {
                         e.preventDefault();
+                      
                         setPhoto("");
+                         
                       }}
                       className="webcam-btn"
                     >
@@ -141,6 +152,7 @@ export const Add = () => {
                       onClick={(e) => {
                         e.preventDefault();
                         capture();
+                        
                       }}
                       className="webcam-btn"
                     >

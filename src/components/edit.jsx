@@ -4,6 +4,7 @@ import { Button,Grid, Box, Container,FormControl,InputLabel,Select,MenuItem } fr
 import { useNavigate } from 'react-router-dom';
 import {Reusabletextfield} from './reusabletextfield'
 import Webcam from "react-webcam";
+import {useLocation} from 'react-router-dom';
 const axios = require('axios');
 
 const WebcamComponent = () => <Webcam />;
@@ -13,10 +14,14 @@ const videoConstraints = {
   height: 200,
   facingMode: "user",
 };
-export const Edit = () => {
+export const Edit = (props) => {
+  
     let { id } = useParams();
    
   let history = useNavigate();
+  const location = useLocation();
+
+  console.log(location,"Edit")
   
   const [user, setUsers] = useState({
     name: "", age: "",bloodgroup:""
@@ -39,10 +44,12 @@ export const Edit = () => {
       .then(function (response) {
         if (response.data.status === true) {
           console.log(response.data)
-         
-          setUsers({name: response.data.data.name, age: response.data.data.age, blood_group: response.data.data.blood_group})
+         {
+          setUsers({name: response.data.data.name, age: response.data.data.age, bloodgroup: response.data.data.blood_group})
+         }
+         {
           setPhoto({photo: response.data.data.photo})
-
+         }
         }
         console.log(response.data);
 
@@ -70,7 +77,7 @@ export const Edit = () => {
       const formdata = new FormData();
       formdata.append("id", id);
       formdata.append("name", user.name);
-   
+      formdata.append("photo", photo );
       formdata.append("age", user.age);
       formdata.append("blood_group", user.bloodgroup);
       
@@ -83,7 +90,7 @@ export const Edit = () => {
           }
           console.log(response.data);
         });
-    console.log(user)
+    console.log(user,photo)
     }
 
   }

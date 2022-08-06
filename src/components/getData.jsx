@@ -28,9 +28,20 @@ axios.get("/List of all Workers").then(function (res) {
 }
 )
 }
+const deleteRow = (id) => {
+ 
+  const formdata = new FormData();
+  formdata.append("id", id);
+  axios.post("/Delete Worker", formdata).then(function (response) {
+    if (response.data.status === true) {
+      getdata();
+    }
+    console.log(response.data);
+  });
+};
  return (
 <div className="get">
-      
+
         <table className="tab">
           <thead className="hd">
             <th>ID</th>
@@ -42,24 +53,25 @@ axios.get("/List of all Workers").then(function (res) {
             <th>PHOTO</th>
             <th>EDITED TIME</th>
             <th>EDIT DETAILS</th>
-            
+            <th>DELETE</th>DE
           
           </thead>
           <tbody>
+         
             { users.length > 0 &&
             users.map((user) => {
               return (
                 <tr>
+                  {/* {JSON.stringify(photo)}  */}
                   <td>{user.id}</td>
                   <td>{user.name}</td>
                   <td>{user.age}</td>
                   <td>{user.blood_group}</td>                  
                   <td>{user.Added_Date}</td>
-                  
-                  
                   <td>
+                   
                         <img
-                          src={`http://192.168.1.51:5335/static/uploads/${user.photo}`}
+                          src={`http://192.168.1.51:3335/static/uploads/${user.photo}`}
                           alt="IMAGE"
                           width="150"
                           height="150"
@@ -73,9 +85,21 @@ axios.get("/List of all Workers").then(function (res) {
                               <Button
                                 variant="contained"
                                 color="success"
-                                onClick={() => history(`/edit/${user.id}`)}
+                                onClick={() => history('/edit',
+                                {state:{name: user?.name,age:user?.age}})}
                               >
                                 Edit
+                              </Button>
+                            </form>
+                          </td>
+                          <td>
+                            <form>
+                              <Button
+                                variant="contained"
+                                color="error"
+                                onClick={() => deleteRow(user.id)}
+                              >
+                                Delete
                               </Button>
                             </form>
                           </td>

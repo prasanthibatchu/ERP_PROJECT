@@ -3,9 +3,7 @@
 }
 
 .get {
-  display: flex;
-  align-items: center;
-  text-align: center;
+  margin-left: 30%;
 }
 
 table {
